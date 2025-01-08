@@ -1,8 +1,9 @@
+import 'dotenv/config'; // load env variables
 import app from './app';
 
 try {
 
-    const PORT = 8715;
+    const PORT = Number(process.env.PORT) || 8715;
 
     app.listen(PORT, () => {
         console.log(
