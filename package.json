@@ -1,0 +1,21 @@
+{
+  "name": "Cachie",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Alao-Abiodun/Cachie.git",
+  "author": "Alao Abiodun <abiodundev@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "ts-node src/index.ts"
+  },
+  "dependencies": {
+    "express": "4.18.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  },
+  "type": "module"
+}
