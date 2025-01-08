@@ -6,14 +6,18 @@
   "author": "Alao Abiodun <abiodundev@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node src/index.ts"
+    "dev": "nodemon src/index.ts",
+    "build": "sh build.sh",
+    "start": "node --es-module-specifier-resolution=node ./dist/index.js"
   },
   "dependencies": {
+    "dotenv": "^16.4.7",
     "express": "4.18.2"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
     "@types/node": "^22.10.5",
+    "nodemon": "^3.1.9",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.2"
   },
