@@ -12,6 +12,7 @@ Cachie is an analytics engine that tracks search patterns with support for patte
 ## Project File Structure
 - `src` - All source code
   - `__tests__` - Unit test files
+  - `api-v1` - Open API documentation for API endpoints.
   - `config` - Configuration files
   - `controllers` - Controllers responsible for handling requests and business logic (Use Cases)
   - `interface` - Interface and types

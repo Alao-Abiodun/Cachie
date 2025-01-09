@@ -1,24 +1,40 @@
 import express, { Request, Response, Application, NextFunction } from 'express';
+import expressOpenapi from 'express-openapi';
+import swaggerUi from 'swagger-ui-express';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+import path, { dirname } from 'path';
+import yaml from 'js-yaml';
+import { StatusCodes } from 'http-status-codes';
+import AppError from './utils/lib/appError';
+import logger from './services/logger.service';
 
-declare module 'express-serve-static-core' {
-    interface Response {
-        error: (code: number, message: string) => Response;
-        success: (code: number, message: string, result: any) => Response
-    }
-}
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const apiDoc = yaml.load(fs.readFileSync(path.join(__dirname, './api-v1/api-doc.yml'), 'utf-8')) as any;
 
 const app: Application = express();
 
 //get routes
 import routes from './routes/index.route';
-import { StatusCodes } from 'http-status-codes';
-import AppError from './utils/lib/appError';
-import logger from './services/logger.service';
-import { errorResponse } from './utils/lib/response';
 
 // setup middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(
+    '/cachie/v1/docs',
+    swaggerUi.serve,
+    swaggerUi.setup(apiDoc)
+  );
+
+// Initialize OpenAPI middleware
+expressOpenapi.initialize({
+    app,
+    apiDoc,
+    paths: path.resolve(__dirname, './routes'),
+  });
 
 // mount routes
 app.use('/cachie/v1', routes);
