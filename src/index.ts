@@ -1,5 +1,6 @@
 import 'dotenv/config'; // load env variables
 import app from './app';
+import logger from './services/logger.service';
 
 try {
 
@@ -20,9 +21,11 @@ process.on('SIGINT', async () => {
 });
 
 process.on('unhandledRejection', async (error) => {
+    logger.fatal(error);
     process.exit(1); //server needs to crash and a process manager will restart it
 });
 
 process.on('uncaughtException', async (error) => {
+    logger.fatal(error);
     process.exit(1); //server needs to crash and a process manager will restart it
 });
