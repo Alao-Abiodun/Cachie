@@ -12,6 +12,9 @@ const app: Application = express();
 //get routes
 import routes from './routes/index.route';
 import { StatusCodes } from 'http-status-codes';
+import AppError from './utils/lib/appError';
+import logger from './services/logger.service';
+import { errorResponse } from './utils/lib/response';
 
 // setup middleware
 app.use(express.json());
@@ -33,5 +36,20 @@ app.get('*', async (req: Request, res: any, next: NextFunction) => {
         message: `Resource ${req.originalUrl} does not exist`
     })
 })
+
+// handle global error
+app.use((error: AppError, req: any, res: any, next: any) => {
+    logger.error(error);
+    console.log('error', error);
+    const message =
+        error.name === 'Error' ? 'Something went wrong' : error.message;
+    const statusCode =
+        error.name === 'Error'
+            ? StatusCodes.INTERNAL_SERVER_ERROR
+            : error.statusCode ?? StatusCodes.BAD_REQUEST;
+    return res.status(statusCode).json({
+        message
+    })
+});
 
 export default app;
