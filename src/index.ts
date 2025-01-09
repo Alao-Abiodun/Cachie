@@ -14,7 +14,7 @@ try {
         );
         console.log(`📄 API Documentation available at: ${SWAGGER_DOCS_URL}`);
         logger.info(
-            `🚀  Patient service is ready at: http://localhost:${PORT}`
+            `🚀  Cachie service is ready at: http://localhost:${PORT}`
         );
         logger.info(`📄 API Documentation available at: ${SWAGGER_DOCS_URL}`);
     });
