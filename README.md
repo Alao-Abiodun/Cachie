@@ -15,6 +15,7 @@ Cachie is an analytics engine that tracks search patterns with support for patte
   - `api-v1` - Open API documentation for API endpoints.
   - `config` - Configuration files
   - `controllers` - Controllers responsible for handling requests and business logic (Use Cases)
+  - `image` - Screenshot showing when the server start successfully
   - `interface` - Interface and types
   - `routes` - API endpoints (Interface Adapters)
   - `services` - Services for interacting with other services or third-party APIs
@@ -30,3 +31,7 @@ Cachie is an analytics engine that tracks search patterns with support for patte
 - Run development server `yarn dev`
 - Run test suite `yarn test`
 - Run production server `yarn start`
+
+You will get this result when the server start successfully
+
+![Cachie Illustration](./src/image/image.png)
