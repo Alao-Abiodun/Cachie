@@ -17,6 +17,7 @@ Cachie is an analytics engine that tracks search patterns with support for patte
   - `interface` - Interface and types
   - `routes` - API endpoints (Interface Adapters)
   - `services` - Services for interacting with other services or third-party APIs
+  - `utils` - Utility functions (helper and library functions)
   - `app.ts` - Main application file (Framework and Drivers)
   - `index.ts` - Server file (entry point)
 

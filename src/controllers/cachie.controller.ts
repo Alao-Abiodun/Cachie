@@ -2,6 +2,8 @@ import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { SearchData } from '../interface/search.interface';
 import logger from '../services/logger.service';
+import { errorResponse, successResponse } from '../utils/lib/response';
+import AppError from '../utils/lib/appError';
 
 // In-memory storage for search data
 const searchData: Record<string, SearchData> = {};
@@ -18,6 +20,10 @@ export const searchClientTrackingInfo = async (req: any, res: any, next: any) =>
       const start = process.hrtime();
   
       const { search_query, client_id, session_id } = req.body;
+
+      if (!search_query || !client_id || !session_id) {
+        throw new AppError('Missing credentials', StatusCodes.BAD_REQUEST)
+      }
   
       const tokens = search_query.split(' ').map(token => token.toLowerCase());
       const num_of_processed_tokens = tokens.length;
@@ -67,11 +73,10 @@ export const searchClientTrackingInfo = async (req: any, res: any, next: any) =>
       const [seconds, nanoseconds] = process.hrtime(start);
       const processingTime = (seconds * 1e3) + (nanoseconds / 1e6);
   
-      return res.status(200).json({
-        status: "ok",
+      return successResponse(res, 'ok', {
         processed_tokens: num_of_processed_tokens,
         processing_time: `${processingTime.toFixed(2)}ms`
-      });
+      })
     } catch (error) {
       return res.status(500).json({
         status: "error",
@@ -95,10 +100,7 @@ export const analyseSearchData = async (req: Request, res: any, next: NextFuncti
     const { analysis_token, match_type = 'exact', include_stats = 'false' } = req.query;
 
     if (!analysis_token) {
-      return res.status(StatusCodes.BAD_REQUEST).json({
-        status: "error",
-        message: "Missing required query parameter: analysis_token."
-      });
+      throw new AppError('Missing required query parameter: analysis_token.', StatusCodes.BAD_REQUEST)
     }
 
     const tokens = (analysis_token as string).split(',');
@@ -140,7 +142,9 @@ export const analyseSearchData = async (req: Request, res: any, next: NextFuncti
       };
     }
 
-    return res.status(StatusCodes.OK).json(response);
+    return successResponse(res, 'Analyzed successfully', {
+        response
+    }, StatusCodes.OK);
   } catch (error) {
     console.error("Error analyzing search data:", error);
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
