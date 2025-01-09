@@ -10,6 +10,9 @@ try {
         console.log(
             `🚀  Cachie is ready at: http://localhost:${PORT}`
         );
+        logger.info(
+            `🚀  Patient service is ready at: http://localhost:${PORT}`
+        );
     });
 
 } catch (err) {
