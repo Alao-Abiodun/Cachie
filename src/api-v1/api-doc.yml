@@ -1,0 +1,98 @@
+swagger: '2.0'
+basePath: '/cachie/v1'
+info:
+  title: 'Cachie'
+  description: 'API for managing search tracking and analysis in Cachie.'
+  version: '1.0.0'
+paths:
+  /search:
+    post:
+      summary: 'Save client tracking info'
+      description: 'Stores search query information for analysis.'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              search_query:
+                type: string
+              client_id:
+                type: string
+              session_id:
+                type: string
+            required:
+              - search_query
+              - client_id
+              - session_id
+      responses:
+        200:
+          description: 'Success response'
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+              message:
+                type: string
+              data:
+                type: object
+        400:
+          description: 'Bad request'
+        500:
+          description: 'Internal server error'
+  /analyze:
+    get:
+      summary: 'Analyze search data'
+      description: 'Provides analysis of stored search data.'
+      parameters:
+        - name: analysis_token
+          in: query
+          required: true
+          type: string
+          description: 'Comma-separated list of tokens to analyze.'
+        - name: match_type
+          in: query
+          required: false
+          type: string
+          enum: [exact, fuzzy]
+          default: exact
+        - name: include_stats
+          in: query
+          required: false
+          type: string
+          enum: [true, false]
+          default: false
+      responses:
+        200:
+          description: 'Success response'
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+              message:
+                type: string
+              data:
+                type: object
+        400:
+          description: 'Bad request'
+        500:
+          description: 'Internal server error'
+definitions:
+  SearchData:
+    type: object
+    properties:
+      exact_matches:
+        type: number
+      fuzzy_matches:
+        type: number
+      client_distribution:
+        type: object
+        additionalProperties:
+          type: number
+      unique_sessions:
+        type: array
+        items:
+          type: string
